@@ -1,6 +1,12 @@
-.bg-new{
+.bg-new {
     background-color: #1e7e34;
 }
+
 .pt-navbar {
     padding-top: 56px;
+}
+
+.session-image {
+    height: 500px;
+    width: auto;
 }

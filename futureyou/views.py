@@ -1,9 +1,7 @@
-from django.core.files.images import ImageFile
-from django.shortcuts import render, redirect
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest
-from django.conf import settings
-from django.urls import reverse
+from django.shortcuts import render, redirect
 from django.utils import translation
 
 from futureyou.forms import ImageModelForm
@@ -13,15 +11,18 @@ from futureyou.forms import ImageModelForm
 def index(request):
     template = "futureyou/pages/index.html"
     context = {}
-    form = ImageModelForm()
-    if (request.method == 'POST' and request.FILES['image']):
-        form = ImageModelForm(request.POST,request.FILES)
+    if request.method == 'POST' and request.FILES['image']:
+        form = ImageModelForm(request.POST, request.FILES)
         if form.is_valid():
             new_image = form.save()
-            request.session['upload_image_id'] =  new_image.pk
-            request.session['upload_image_path'] =  new_image.image.path
-            request.session['upload_image_url'] =  new_image.image.url
-    context["form"] = form
+            request.session['upload_image_id'] = new_image.pk
+            request.session['upload_image_path'] = new_image.image.path
+            request.session['upload_image_url'] = new_image.image.url
+            s = new_image.image.url.split("/")
+            v = "/".join(s[2:])
+            request.session['upload_image_file_name'] = v
+            context["uploaded_file_url"] = v
+            context["form"] = form
     context["path"] = settings.MEDIA_ROOT
     return render(request, template, context)
 
