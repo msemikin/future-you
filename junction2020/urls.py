@@ -28,3 +28,4 @@ urlpatterns = [
     # Language url
     url(r'^lang/(?P<lang>[e]{1}[nt]{1})/$', views.set_language, name='switchlanguage')
 ]
+

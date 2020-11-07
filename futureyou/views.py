@@ -1,14 +1,28 @@
+from django.core.files.images import ImageFile
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest
 from django.conf import settings
+from django.urls import reverse
 from django.utils import translation
+
+from futureyou.forms import ImageModelForm
 
 
 # Create your views here.
 def index(request):
     template = "futureyou/pages/index.html"
     context = {}
+    form = ImageModelForm()
+    if (request.method == 'POST' and request.FILES['image']):
+        form = ImageModelForm(request.POST,request.FILES)
+        if form.is_valid():
+            new_image = form.save()
+            request.session['upload_image_id'] =  new_image.pk
+            request.session['upload_image_path'] =  new_image.image.path
+            request.session['upload_image_url'] =  new_image.image.url
+    context["form"] = form
+    context["path"] = settings.MEDIA_ROOT
     return render(request, template, context)
 
 
@@ -29,9 +43,10 @@ def transactions(request):
     context = {}
     return render(request, template, context)
 
+
 def image_upload(request):
-    print(request)
     return redirect("home")
+
 
 @login_required
 def set_language(request: HttpRequest, lang: str) -> HttpResponse:
