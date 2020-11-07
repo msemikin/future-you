@@ -1,0 +1,31 @@
+{% extends "futureyou/base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Home" %}{% endblock %}
+{% block content %}
+    <div class="container pt-3">
+        <div class="row">
+            <div class="col-6">
+                <div><h5>{% trans "Image upload" %}</h5>
+                    <form action="{% url "image_upload" %}" method="POST">
+                        {% csrf_token %}
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFile" accept="image/*">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                            <button type="submit" class="btn btn-outline-info btn-upload">Upload</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            $(".custom-file-input").on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            });
+        });
+    </script>
+{% endblock %}
