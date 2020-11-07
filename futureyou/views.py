@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 from django.utils import translation
 
-from futureyou.forms import ImageModelForm, GoalFormSet
+from futureyou.forms import ImageModelForm, GoalFormSet, BudgetFormSet
 
 from PIL import Image
 import base64
@@ -39,7 +39,7 @@ def index(request):
 
 def report_image_encoded():
     # Photo as PIL image
-    photo = Image.new('RGB', (200, 200), (255,0,0))
+    photo = Image.new('RGB', (200, 200), (255, 0, 0))
     # Encode magic
     buffered = BytesIO()
     photo.save(buffered, format="JPEG")
@@ -123,9 +123,26 @@ def goals(request):
     return render(request, template, context)
 
 
-def transactions(request):
-    template = "futureyou/pages/transactions.html"
+def budget(request):
+    template = "futureyou/pages/budget.html"
     context = {}
+    initial_categories = [
+        {"name": "saving", "id": 1, "amount": 0},
+        {"name": "dining", "id": 1, "amount": 0},
+        {"name": "transport", "id": 1, "amount": 0},
+        {"name": "entertainment", "id": 1, "amount": 0},
+        {"name": "utilities", "id": 1, "amount": 0},
+    ]
+    categories = request.session["categories"] if "categories" in request.session else initial_categories
+    forms = BudgetFormSet(initial=categories)
+
+    if (request.method == "POST"):
+        forms = BudgetFormSet(request.POST)
+        # print formset data if it is valid
+        if forms.is_valid():
+            request.session["categories"] = forms.cleaned_data
+    context["income"] = request.session["income"] if "income" in request.session else 4000
+    context["forms"] = forms
     return render(request, template, context)
 
 

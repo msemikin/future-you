@@ -22,3 +22,11 @@ class GoalForm(forms.Form):
 
 
 GoalFormSet = formset_factory(GoalForm, extra=0)
+
+class BudgetForm(forms.Form):
+    name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
+    id = forms.IntegerField(widget=forms.NumberInput(attrs={"class": "form-control"}))
+    amount =  forms.IntegerField(widget=forms.NumberInput(attrs={"class": "form-control"}))
+
+
+BudgetFormSet = formset_factory(BudgetForm, extra=0)

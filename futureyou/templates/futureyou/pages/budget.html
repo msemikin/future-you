@@ -1,0 +1,47 @@
+{% extends "futureyou/base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Transactions" %}{% endblock %}
+{% block content %}
+    <div class="container pt-3">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <form method="post">
+                    <h2>Budgeting</h2>
+                    Current monthly income: {{ income }}
+                    <hr>
+                    <p class="text-muted">Set your budgeting goals by categories</p>
+                    <div class="row">
+                        <div class="col-12">
+                            {% csrf_token %}
+                            {{ forms.management_form }}
+                            {% for category in forms %}
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <div>
+                                            {{ category.name.value |capfirst }}
+                                            {{ category.name.as_hidden }}
+                                            {{ category.id.as_hidden }}
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div>
+                                            {{ category.amount }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <button type="submit" class="btn btn-outline-success btn-block">Submit your budget goals</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

@@ -25,11 +25,11 @@
             <li class="nav-item{% if request.resolver_match.view_name == 'goals' %} active{% endif %}">
                 <a class="nav-link" href="{% url 'goals' %}">{% trans "Goals" %}</a>
             </li>
+            <li class="nav-item{% if request.resolver_match.view_name == 'budget' %} active{% endif %}">
+                <a class="nav-link" href="{% url 'budget' %}">{% trans "Budget" %}</a>
+            </li>
             <li class="nav-item{% if request.resolver_match.view_name == 'report' %} active{% endif %}">
                 <a class="nav-link" href="{% url 'report' %}">{% trans "Report" %}</a>
-            </li>
-            <li class="nav-item{% if request.resolver_match.view_name == 'transactions' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'transactions' %}">{% trans "Transactions" %}</a>
             </li>
         </ul>
     </div>

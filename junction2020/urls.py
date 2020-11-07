@@ -25,8 +25,7 @@ urlpatterns = [
     url(r'^$', views.index, name='home'),
     url(r'^goals/$', views.goals, name='goals'),
     url(r'^report/$', views.report, name='report'),
-    url(r'^transactions/$', views.transactions, name='transactions'),
-    url(r'^upload/image$', views.transactions, name='image_upload'),
+    url(r'^budget/$', views.budget, name='budget'),
 
     # Language url
     url(r'^lang/(?P<lang>[e]{1}[nt]{1})/$', views.set_language, name='switchlanguage')
