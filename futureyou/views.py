@@ -6,6 +6,10 @@ from django.utils import translation
 
 from futureyou.forms import ImageModelForm
 
+from PIL import Image
+import base64
+from io import BytesIO
+
 
 # Create your views here.
 def index(request):
@@ -27,9 +31,23 @@ def index(request):
     return render(request, template, context)
 
 
+def report_image_encoded():
+
+    # Photo as PIL image
+    photo = Image.new('RGB', (200, 200), (255,0,0))
+
+    # Encode magic
+    buffered = BytesIO()
+    photo.save(buffered, format="JPEG")
+    img_str = base64.b64encode(buffered.getvalue()).decode('utf-8')
+    return img_str
+
+
 def report(request):
     template = "futureyou/pages/report.html"
-    context = {}
+
+    encoded_photo = report_image_encoded()
+    context = {'photo': encoded_photo}
     return render(request, template, context)
 
 

@@ -1,4 +1,42 @@
 {% extends "futureyou/base.html" %}
 {% load i18n %}
 {% block title %}{% trans "Report" %}{% endblock %}
-{% block content %}{% endblock %}
+{% block content %}
+
+<br/>
+<div class="row">
+
+    <div class="col-12">
+
+        <div class="card">
+            <div class="card-header">Report</div>
+            <div class="card-body">
+                       
+                <div class="row">
+                    <div class="col-2">
+                        <img src="data:image/png;base64,{{ photo }}">
+                    </div>
+                    <div class="col-8">
+                        MSG to you
+                    </div>
+                    <div class="col-2">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        Plots week
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        Buckets
+                    </div>
+                </div>
+        
+            </div>
+          </div>
+
+    </div>
+</div>
+
+{% endblock %}
