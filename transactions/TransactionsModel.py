@@ -31,6 +31,7 @@ NEGATIVE_MOOD_MSG = [
 class TransactionsModel:
 
     def __init__(self):
+        print("- loading mode ...")
         # Load Transactions
         _data_df = pd.read_csv(INPUT_FILE, sep=";")
         # Adjust time to year 2020
@@ -41,7 +42,8 @@ class TransactionsModel:
         # Get only outcome transactions
         self.data_df = _data_df[_data_df.amount < 0]
         self.data_df['amount'] = - self.data_df.amount
-
+        print("... done ...")
+        
     def get_valid_categories(self):
         return CATEGORY_LIST
 

@@ -9,6 +9,12 @@ from futureyou.forms import ImageModelForm, GoalFormSet
 from PIL import Image
 import base64
 from io import BytesIO
+from datetime import datetime
+import matplotlib.pyplot as plt
+
+from transactions.TransactionsModel import TransactionsModel
+
+t_model = TransactionsModel()
 
 
 # Create your views here.
@@ -32,10 +38,8 @@ def index(request):
 
 
 def report_image_encoded():
-
     # Photo as PIL image
     photo = Image.new('RGB', (200, 200), (255,0,0))
-
     # Encode magic
     buffered = BytesIO()
     photo.save(buffered, format="JPEG")
@@ -45,8 +49,40 @@ def report_image_encoded():
 
 def report(request):
     template = "futureyou/pages/report.html"
-    encoded_photo = report_image_encoded()
-    context = {'photo': encoded_photo}
+    context = {}
+
+    # ----------------------------------
+    # TODO: This context comes from some other place
+    # ----------------------------------
+    user_name = "Test user"
+    user_iban = t_model.get_random_bank_account()
+    current_date = datetime.now().date()
+    buckets = {
+        'Housing': 100,
+        'Clothing': 50,
+        'Education': 200,
+        'Food': 300
+    }
+    # Score 0 to 1
+    goals = [
+        {'Retire': 1.0, 'description': 'Keep my lifestyle when I retire'},
+        {'Savings': 0.7, 'description': 'Be prepared for surprises'}
+    ]
+    # ----------------------------------
+
+    # Report data
+    report_data = t_model.get_report_data(user_iban, buckets, goals, current_date)
+    
+    # Week plot
+    week_plot = report_data['week_plot']
+    fig = plt.Figure(figsize=(14, 8))
+    ax = fig.add_subplot(111)
+    ax = week_plot.plot.bar(ax=ax)
+    buffered = BytesIO()
+    fig.savefig(buffered, format='png', dpi=100)
+    context['week_plot'] = base64.b64encode(buffered.getvalue()).decode('utf-8')
+
+    context['photo'] = report_image_encoded()
     return render(request, template, context)
 
 

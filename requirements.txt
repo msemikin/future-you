@@ -1,3 +1,5 @@
 
 django==3.0.6
 Pillow==8.0.1
+pandas==1.1.4
+matplotlib==3.3.2
