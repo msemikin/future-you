@@ -2,4 +2,38 @@
 {% load i18n %}
 {% block title %}{% trans "Goals" %}{% endblock %}
 {% block content %}
+    <div class="container pt-3">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-sm-12">
+                <h2 class="text-center">What do you want to achieve</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ forms.management_form }}
+                    <div class="row">
+                        {% for form in forms %}
+                            <div class="col-md-12 col-sm-12">
+                                <div class="card text-white bg-new mb-3 p-2 shadow">
+                                    <h5>{{ form.goal.label }} {{ forloop.counter }}</h5>
+                                    <div class="row">
+                                        <div class="col">{{ form.goal }}</div>
+                                        <div class="col">{{ form.priority }}</div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col">
+                                            {{ form.comment }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <button type="submit" class="btn btn-outline-success btn-block">Submit your goals</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
