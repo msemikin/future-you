@@ -3,10 +3,16 @@
 }
 
 .pt-navbar {
-    padding-top: 56px;
+    padding-top: 64px;
+}
+
+.shadow {
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.35) !important;
 }
 
 .session-image {
     height: 500px;
     width: auto;
+    margin: 0 auto;
+    display: block;
 }

@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 from django.utils import translation
 
-from futureyou.forms import ImageModelForm
+from futureyou.forms import ImageModelForm, GoalFormSet
 
 from PIL import Image
 import base64
@@ -45,7 +45,6 @@ def report_image_encoded():
 
 def report(request):
     template = "futureyou/pages/report.html"
-
     encoded_photo = report_image_encoded()
     context = {'photo': encoded_photo}
     return render(request, template, context)
@@ -54,6 +53,37 @@ def report(request):
 def goals(request):
     template = "futureyou/pages/goals.html"
     context = {}
+    context["goals"] = request.session["goals"] if "goals" in request.session else []
+    initial_data = [
+        {
+            "goal": "Your first goal",
+            "priority": 1,
+        },
+        {
+            "goal": "Your second goal",
+            "priority": 2,
+        },
+        {
+            "goal": "Your third goal",
+            "priority": 3,
+        },
+        {
+            "goal": "Your fourth goal",
+            "priority": 4,
+        },
+        {
+            "goal": "Your fifth goal",
+            "priority": 5,
+        }
+    ]
+    initial_data = request.session["forms"] if "forms" in request.session else initial_data
+    forms = GoalFormSet(initial=initial_data)
+    if (request.method == "POST"):
+        forms = GoalFormSet(request.POST)
+        # print formset data if it is valid
+        if forms.is_valid():
+            request.session["forms"] = forms.cleaned_data
+    context["forms"] = forms
     return render(request, template, context)
 
 
