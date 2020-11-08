@@ -72,12 +72,22 @@ def report(request):
 
     # Report data
     report_data = t_model.get_report_data(user_iban, buckets, goals, current_date)
-    
+    # User name
+    context['user_name'] = user_name
+    # Msg
+    context['mood_msg'] = report_data['mood_msg']
+    context['goal_reminder'] = report_data['goal_reminder']
+    context['buckets'] = report_data['buckets']
+    context['bucket_transactions'] = report_data['bucket_transactions']
+
     # Week plot
     week_plot = report_data['week_plot']
-    fig = plt.Figure(figsize=(14, 8))
+    week_plot = week_plot.reset_index()
+    week_plot['week_date'] = week_plot.week_date.apply(lambda x: x.date().isoformat())
+    week_plot = week_plot.set_index('week_date')
+    fig = plt.Figure(figsize=(10, 5))
     ax = fig.add_subplot(111)
-    ax = week_plot.plot.bar(ax=ax)
+    ax = week_plot.plot.bar(ax=ax, rot=0)
     buffered = BytesIO()
     fig.savefig(buffered, format='png', dpi=100)
     context['week_plot'] = base64.b64encode(buffered.getvalue()).decode('utf-8')

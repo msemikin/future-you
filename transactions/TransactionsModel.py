@@ -31,7 +31,7 @@ NEGATIVE_MOOD_MSG = [
 class TransactionsModel:
 
     def __init__(self):
-        print("- loading mode ...")
+        print("- loading model ...")
         # Load Transactions
         _data_df = pd.read_csv(INPUT_FILE, sep=";")
         # Adjust time to year 2020
